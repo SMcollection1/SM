@@ -23,7 +23,7 @@
       font-weight: 600;
       font-size: 1.2em;
     }
-    .login-box, .form-box {
+    .box {
       background: #fff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       border-radius: 12px;
@@ -60,13 +60,15 @@
 
   <header>Admin Panel - SM Collections</header>
 
-  <div class="login-box" id="loginBox">
+  <!-- Login Box -->
+  <div class="box" id="loginBox">
     <h2>Login</h2>
     <input type="password" id="password" placeholder="Enter Admin Password">
     <button onclick="login()">Login</button>
   </div>
 
-  <div class="form-box" id="formBox" style="display:none;">
+  <!-- Product Add Box -->
+  <div class="box" id="formBox" style="display:none;">
     <h2>Add Product</h2>
     <input type="text" id="pname" placeholder="Product Name">
     <select id="pcategory">
@@ -77,31 +79,52 @@
     </select>
     <input type="text" id="pimage" placeholder="Image URL">
     <button onclick="addProduct()">Add Product</button>
+    <p id="msg" style="color:green; font-weight:600;"></p>
   </div>
 
   <script>
+    // Simple Login
     function login() {
       const pass = document.getElementById("password").value;
       if (pass === "sm2025") {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("formBox").style.display = "block";
       } else {
-        alert("Incorrect password!");
+        alert("❌ Wrong password!");
       }
     }
 
-    function addProduct() {
-      const name = document.getElementById("pname").value;
+    // Add Product Function
+    async function addProduct() {
+      const name = document.getElementById("pname").value.trim();
       const category = document.getElementById("pcategory").value;
-      const image = document.getElementById("pimage").value;
+      const image = document.getElementById("pimage").value.trim();
+      const msg = document.getElementById("msg");
 
-      if (name && image) {
-        alert(`✅ Product added successfully!\nName: ${name}\nCategory: ${category}`);
-        document.getElementById("pname").value = "";
-        document.getElementById("pimage").value = "";
-      } else {
+      if (!name || !image) {
         alert("Please fill all fields!");
+        return;
       }
+
+      // Product data
+      const newProduct = { name, category, image };
+
+      // Get existing data
+      const res = await fetch("products.json");
+      const data = await res.json();
+
+      // Add new one
+      data.push(newProduct);
+
+      // Show success message
+      msg.textContent = "✅ Product added successfully! (Temporary Preview)";
+
+      // Clear form
+      document.getElementById("pname").value = "";
+      document.getElementById("pimage").value = "";
+
+      // Save locally only (next step will make it permanent)
+      console.log("Added Product:", newProduct);
     }
   </script>
 
