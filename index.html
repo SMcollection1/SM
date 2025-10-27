@@ -7,38 +7,123 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f8f9fa, #f1f1f1);
-      text-align: center;
-      padding: 50px 20px;
-    }
-    h1 {
-      color: #d63384;
-      font-size: 2.5em;
-    }
-    p {
+      margin: 0;
+      background: #fff;
       color: #333;
+    }
+
+    /* Navbar */
+    header {
+      background-color: #d63384;
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
       font-size: 1.2em;
-      margin-top: 10px;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #fff0f6, #ffe6f0);
+    }
+    .hero h1 {
+      color: #d63384;
+      font-size: 2.3em;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: 1.1em;
+      margin-bottom: 25px;
+      color: #555;
     }
     .btn {
       display: inline-block;
-      margin-top: 25px;
       padding: 12px 25px;
       background-color: #d63384;
       color: white;
-      text-decoration: none;
       border-radius: 30px;
+      text-decoration: none;
       font-weight: 600;
     }
     .btn:hover {
       background-color: #b62c70;
     }
+
+    /* Categories Section */
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+    }
+    .category {
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .category:hover {
+      transform: translateY(-5px);
+    }
+    .category img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .category h3 {
+      margin-top: 10px;
+      color: #d63384;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #f1f1f1;
+      color: #666;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
-  <h1>Welcome to SM Collections</h1>
-  <p>Explore cosmetics, jewelry, clothing, and electronics — all in one place!</p>
 
-  <a href="https://wa.me/923001234567" class="btn">Chat on WhatsApp</a>
+  <!-- Navbar -->
+  <header>💎 SM Collections 💎</header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Welcome to SM Collections</h1>
+    <p>Explore cosmetics, jewelry, clothing, and electronics — all in one place!</p>
+    <a href="https://wa.me/923133295329" class="btn">Chat on WhatsApp</a>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories">
+    <div class="category">
+      <img src="https://i.imgur.com/9tKp5Ew.jpg" alt="Cosmetics">
+      <h3>Cosmetics</h3>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/Z0pXy8S.jpg" alt="Jewelry">
+      <h3>Jewelry</h3>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/qeD2pDw.jpg" alt="Clothing">
+      <h3>Clothing</h3>
+    </div>
+    <div class="category">
+      <img src="https://i.imgur.com/VprLONz.jpg" alt="Electronics">
+      <h3>Electronics</h3>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>© 2025 SM Collections. All rights reserved.</footer>
+
 </body>
 </html>
