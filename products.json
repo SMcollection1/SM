@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Lip Gloss Set",
+    "category": "Cosmetics",
+    "image": "https://i.imgur.com/9tKp5Ew.jpg"
+  },
+  {
+    "name": "Golden Necklace",
+    "category": "Jewelry",
+    "image": "https://i.imgur.com/Z0pXy8S.jpg"
+  },
+  {
+    "name": "Summer Dress",
+    "category": "Clothing",
+    "image": "https://i.imgur.com/qeD2pDw.jpg"
+  },
+  {
+    "name": "Wireless Headphones",
+    "category": "Electronics",
+    "image": "https://i.imgur.com/VprLONz.jpg"
+  }
+]
