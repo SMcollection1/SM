@@ -18,5 +18,12 @@
     "name": "Wireless Headphones",
     "category": "Electronics",
     "image": "https://i.imgur.com/VprLONz.jpg"
+  },
+  {
+    "name": "Test Lipstick",
+    "description": "Test description",
+    "price": "1000",
+    "image": "https://i.imgur.com/9tKp5Ew.jpg",
+    "category": "Cosmetics"
   }
 ]
