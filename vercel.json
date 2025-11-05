@@ -1,8 +1,10 @@
 {
   "functions": {
     "api/**/*.js": {
-      "runtime": "vercel-node@20.x"
+      "runtime": "nodejs20.x"
     }
   },
+  "buildCommand": "",
+  "outputDirectory": ".",
   "cleanUrls": true
 }
