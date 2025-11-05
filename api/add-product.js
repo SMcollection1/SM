@@ -1,36 +1,27 @@
-let products = [
-  {
-    name: "Lip Gloss Set",
-    category: "Cosmetics",
-    price: "1200",
-    image: "https://i.imgur.com/9tKp5Ew.jpg"
-  }
-];
+import fs from "fs";
+import path from "path";
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method === "POST") {
-    try {
-      const { name, category, price, image } = req.body;
+    const filePath = path.join(process.cwd(), "products.json");
 
-      if (!name || !category || !price || !image) {
-        return res.status(400).json({ message: "⚠️ Missing fields" });
+    try {
+      const newProduct = req.body;
+      let products = [];
+
+      if (fs.existsSync(filePath)) {
+        const data = fs.readFileSync(filePath, "utf-8");
+        products = JSON.parse(data || "[]");
       }
 
-      const newProduct = { name, category, price, image };
       products.push(newProduct);
+      fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
 
-      return res
-        .status(200)
-        .json({ message: "✅ Product added successfully", product: newProduct });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "⚠️ Server error" });
+      res.status(200).json({ message: "✅ Product added successfully!" });
+    } catch (err) {
+      res.status(500).json({ message: "❌ Error saving product." });
     }
+  } else {
+    res.status(405).json({ message: "❌ Method not allowed" });
   }
-
-  if (req.method === "GET") {
-    return res.status(200).json(products);
-  }
-
-  return res.status(405).json({ message: "❌ Method not allowed" });
 }
