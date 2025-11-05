@@ -12,7 +12,6 @@
       margin: 0;
       padding: 0;
     }
-
     header {
       background-color: #d63384;
       color: white;
@@ -21,7 +20,6 @@
       font-size: 1.5em;
       font-weight: bold;
     }
-
     .container {
       max-width: 600px;
       margin: 40px auto;
@@ -30,19 +28,16 @@
       border-radius: 12px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-
     h2 {
       color: #d63384;
       text-align: center;
       margin-bottom: 20px;
     }
-
     label {
       font-weight: 600;
       display: block;
       margin-bottom: 5px;
     }
-
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -51,7 +46,6 @@
       border: 1px solid #ccc;
       font-size: 1em;
     }
-
     button {
       background-color: #d63384;
       color: white;
@@ -63,26 +57,21 @@
       width: 100%;
       font-weight: bold;
     }
-
     button:hover {
       background-color: #b62c70;
     }
-
     .message {
       text-align: center;
       margin-top: 15px;
       font-weight: 600;
     }
-
     .product-list {
       margin-top: 40px;
     }
-
     .product {
       border-bottom: 1px solid #ddd;
       padding: 10px 0;
     }
-
     .product img {
       width: 100px;
       border-radius: 5px;
@@ -91,27 +80,20 @@
 </head>
 <body>
   <header>Admin Panel - SM Collections</header>
-
   <div class="container">
     <h2>Add New Product</h2>
     <form id="productForm">
       <label>Product Name:</label>
-      <input type="text" id="name" placeholder="e.g. Lipstick" required />
-
+      <input type="text" id="name" required />
       <label>Category:</label>
-      <input type="text" id="category" placeholder="e.g. Cosmetics" required />
-
+      <input type="text" id="category" required />
       <label>Price (PKR):</label>
-      <input type="number" id="price" placeholder="e.g. 1500" required />
-
+      <input type="number" id="price" required />
       <label>Image URL:</label>
-      <input type="text" id="image" placeholder="https://example.com/image.jpg" required />
-
+      <input type="text" id="image" required />
       <button type="submit">Add Product</button>
     </form>
-
     <div class="message" id="message"></div>
-
     <div class="product-list" id="productList"></div>
   </div>
 
@@ -120,11 +102,9 @@
     const message = document.getElementById("message");
     const productList = document.getElementById("productList");
 
-    // 🟢 Correct API URLs
-    const ADD_API_URL = "https://sm-bice.vercel.app/api/add-product";
-    const GET_API_URL = "https://sm-bice.vercel.app/api/products";
+    const API_URL_ADD = "/api/add-product";
+    const API_URL_GET = "/api/products";
 
-    // 🟢 Add Product
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const product = {
@@ -137,33 +117,30 @@
       message.innerHTML = "⏳ Adding product...";
 
       try {
-        const res = await fetch(ADD_API_URL, {
+        const res = await fetch(API_URL_ADD, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(product),
         });
 
-        const data = await res.json();
-
         if (res.ok) {
           message.style.color = "green";
-          message.innerHTML = "✅ " + data.message;
+          message.innerHTML = "✅ Product added successfully!";
           form.reset();
           loadProducts();
         } else {
           message.style.color = "red";
-          message.innerHTML = "❌ " + (data.message || "Error adding product.");
+          message.innerHTML = "❌ Error adding product.";
         }
-      } catch (err) {
+      } catch {
         message.style.color = "red";
         message.innerHTML = "⚠️ Connection error.";
       }
     });
 
-    // 🟣 Load Existing Products
     async function loadProducts() {
       try {
-        const res = await fetch(GET_API_URL);
+        const res = await fetch(API_URL_GET);
         const data = await res.json();
         productList.innerHTML = "<h2>All Products</h2>";
         data.forEach((p) => {
