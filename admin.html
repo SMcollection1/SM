@@ -1,182 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - SM Collections</title>
-  <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background-color: #fff;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+<script>
+  const form = document.getElementById("productForm");
+  const message = document.getElementById("message");
+  const productList = document.getElementById("productList");
 
-    header {
-      background-color: #d63384;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
+  const ADD_API_URL = "https://sm-bice.vercel.app/api/add-product";
+  const GET_API_URL = "https://sm-bice.vercel.app/api/products";
 
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: #f9f9f9;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
+  // 🟢 Add Product
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const product = {
+      name: document.getElementById("name").value,
+      category: document.getElementById("category").value,
+      price: document.getElementById("price").value,
+      image: document.getElementById("image").value,
+    };
 
-    h2 {
-      color: #d63384;
-      text-align: center;
-      margin-bottom: 20px;
-    }
+    message.innerHTML = "⏳ Adding product...";
 
-    label {
-      font-weight: 600;
-      display: block;
-      margin-bottom: 5px;
-    }
+    try {
+      const res = await fetch(ADD_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
 
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1em;
-    }
+      const data = await res.json();
 
-    button {
-      background-color: #d63384;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1em;
-      width: 100%;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background-color: #b62c70;
-    }
-
-    .message {
-      text-align: center;
-      margin-top: 15px;
-      font-weight: 600;
-    }
-
-    .product-list {
-      margin-top: 40px;
-    }
-
-    .product {
-      border-bottom: 1px solid #ddd;
-      padding: 10px 0;
-    }
-
-    .product img {
-      width: 100px;
-      border-radius: 5px;
-    }
-
-  </style>
-</head>
-<body>
-  <header>Admin Panel - SM Collections</header>
-
-  <div class="container">
-    <h2>Add New Product</h2>
-    <form id="productForm">
-      <label>Product Name:</label>
-      <input type="text" id="name" placeholder="e.g. Lipstick" required />
-
-      <label>Category:</label>
-      <input type="text" id="category" placeholder="e.g. Cosmetics" required />
-
-      <label>Price (PKR):</label>
-      <input type="number" id="price" placeholder="e.g. 1500" required />
-
-      <label>Image URL:</label>
-      <input type="text" id="image" placeholder="https://example.com/image.jpg" required />
-
-      <button type="submit">Add Product</button>
-    </form>
-
-    <div class="message" id="message"></div>
-
-    <div class="product-list" id="productList"></div>
-  </div>
-
-  <script>
-    const form = document.getElementById("productForm");
-    const message = document.getElementById("message");
-    const productList = document.getElementById("productList");
-
-    const API_URL = "https://sm-bice.vercel.app/api/add-product";
-
-    // 🟢 Add Product
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const product = {
-        name: document.getElementById("name").value,
-        category: document.getElementById("category").value,
-        price: document.getElementById("price").value,
-        image: document.getElementById("image").value,
-      };
-
-      message.innerHTML = "⏳ Adding product...";
-
-      try {
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(product),
-        });
-
-        if (res.ok) {
-          message.style.color = "green";
-          message.innerHTML = "✅ Product added successfully!";
-          form.reset();
-          loadProducts();
-        } else {
-          message.style.color = "red";
-          message.innerHTML = "❌ Error adding product.";
-        }
-      } catch (err) {
+      if (res.ok) {
+        message.style.color = "green";
+        message.innerHTML = "✅ " + data.message;
+        form.reset();
+        loadProducts();
+      } else {
         message.style.color = "red";
-        message.innerHTML = "⚠️ Connection error.";
+        message.innerHTML = "❌ " + (data.message || "Error adding product.");
       }
-    });
-
-    // 🟣 Load Existing Products
-    async function loadProducts() {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-        productList.innerHTML = "<h2>All Products</h2>";
-        data.forEach((p) => {
-          productList.innerHTML += `
-            <div class="product">
-              <img src="${p.image}" alt="${p.name}" />
-              <p><strong>${p.name}</strong> (${p.category}) - Rs ${p.price}</p>
-            </div>
-          `;
-        });
-      } catch {
-        productList.innerHTML = "<p style='color:red;'>Error loading products.</p>";
-      }
+    } catch (err) {
+      message.style.color = "red";
+      message.innerHTML = "⚠️ Connection error.";
     }
+  });
 
-    loadProducts();
-  </script>
-</body>
-</html>
+  // 🟣 Load Existing Products
+  async function loadProducts() {
+    try {
+      const res = await fetch(GET_API_URL);
+      const data = await res.json();
+      productList.innerHTML = "<h2>All Products</h2>";
+      data.forEach((p) => {
+        productList.innerHTML += `
+          <div class="product">
+            <img src="${p.image}" alt="${p.name}" />
+            <p><strong>${p.name}</strong> (${p.category}) - Rs ${p.price}</p>
+          </div>
+        `;
+      });
+    } catch {
+      productList.innerHTML = "<p style='color:red;'>Error loading products.</p>";
+    }
+  }
+
+  loadProducts();
+</script>
